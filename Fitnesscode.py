@@ -1,34 +1,33 @@
 import streamlit as st
 
-st.set_page_config(page_title="Fitness Food", layout="wide")
+# -----------------------------------
+# CONFIG
+# -----------------------------------
+st.set_page_config(page_title="FORMO Nutrition", layout="wide")
 
-# -------------------------
-# CUSTOM CSS (NEXT LEVEL UI)
-# -------------------------
+# -----------------------------------
+# CUSTOM CSS (NEON STYLE)
+# -----------------------------------
 st.markdown("""
 <style>
-/* Hintergrund */
 .stApp {
     background-color: #050505;
     color: white;
 }
 
-/* Neon Glow Effekt */
 .neon {
     color: #39ff14;
     text-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14;
 }
 
-/* Buttons */
 .stButton>button {
     background: linear-gradient(90deg, #39ff14, #00ff99);
     color: black;
-    border-radius: 12px;
+    border-radius: 10px;
     font-weight: bold;
     height: 3em;
 }
 
-/* Card Look */
 .card {
     background-color: #111;
     padding: 20px;
@@ -36,99 +35,120 @@ st.markdown("""
     box-shadow: 0 0 15px rgba(57,255,20,0.3);
     margin-bottom: 20px;
 }
-
-/* Sidebar */
-.css-1d391kg {
-    background-color: #0a0a0a;
-}
 </style>
 """, unsafe_allow_html=True)
 
-# -------------------------
-# SIDEBAR NAVIGATION
-# -------------------------
+# -----------------------------------
+# NAVIGATION
+# -----------------------------------
 page = st.sidebar.radio("Navigation", [
     "Startseite",
     "Essensbox",
-    "Kalorienrechner",
+    "Kalorienrechner"
 ])
 
-# -------------------------
-# STARTSEITE (UPGRADE)
-# -------------------------
+# -----------------------------------
+# STARTSEITE
+# -----------------------------------
 if page == "Startseite":
 
-    # Logo
-    st.image("assets/logo.png", width=150)
+    st.image("formo_logo.jpg", width=250)
 
-    st.markdown("<h1 class='neon'>FULL DAY OF EATING</h1>", unsafe_allow_html=True)
-
-    st.image("assets/hero.jpg", use_column_width=True)
-
-    st.markdown("""
-    ## 💪 Dein Fitness. Dein Plan. Dein Essen.
-
-    Keine Zeit zu kochen? Kein Problem.  
-    Wir liefern dir komplette **Full Day of Eating Boxen** – perfekt abgestimmt auf dein Ziel.
-
-    ---
-    """)
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.markdown("<div class='card'><h3>🔥 Cutting</h3><p>Fett verlieren, Muskeln behalten.</p></div>", unsafe_allow_html=True)
-
-    with col2:
-        st.markdown("<div class='card'><h3>⚖️ Maintenance</h3><p>Gewicht halten, clean essen.</p></div>", unsafe_allow_html=True)
-
-    with col3:
-        st.markdown("<div class='card'><h3>💪 Bulking</h3><p>Muskelaufbau mit Überschuss.</p></div>", unsafe_allow_html=True)
+    st.markdown("<h1 class='neon'>FORMO NUTRITION</h1>", unsafe_allow_html=True)
+    st.markdown("### Fuel your day. Build your future.")
 
     st.markdown("---")
 
-    st.subheader("🚀 Warum wir?")
-    st.write("""
-    - Individuell anpassbare Boxen  
-    - Hochwertige Zutaten  
-    - Perfekt für Fitnessziele  
-    - Spart Zeit & Aufwand  
+    st.image("shakes.jpg", use_column_width=True)
+
+    st.markdown("""
+    ## 🔥 MORNING FUEL. REAL RESULTS.
+
+    ✔ 25g Protein pro Portion  
+    ✔ Low Sugar  
+    ✔ Perfekt für dein Fitnessziel  
+
+    Egal ob **Cutting, Maintenance oder Bulking** – wir liefern dir die passende Ernährung.
     """)
 
-# -------------------------
-# ESSENSBOX BUILDER
-# -------------------------
+    st.markdown("---")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.image("yogurt.jpg", use_column_width=True)
+
+    with col2:
+        st.markdown("""
+        ## 🍓 Protein Yogurt Bites
+
+        - High Protein  
+        - Low Sugar  
+        - Perfekt als Snack  
+        - Ideal für unterwegs  
+
+        Ergänze deine Box perfekt.
+        """)
+
+    st.markdown("---")
+
+    st.markdown("<h2 class='neon'>🍱 Baue deine eigene Box</h2>", unsafe_allow_html=True)
+
+    st.write("Stelle dir deine perfekte Full Day of Eating Box zusammen.")
+
+    if st.button("🚀 Jetzt starten"):
+        st.session_state.page = "Essensbox"
+
+
+# -----------------------------------
+# ESSENSBOX
+# -----------------------------------
 elif page == "Essensbox":
 
-    st.markdown("<h1 class='neon'>🍱 Baue deine Box</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 class='neon'>🍱 Deine Fitness Box</h1>", unsafe_allow_html=True)
 
-    ziel = st.selectbox("Ziel", ["Cutting", "Maintenance", "Bulking"])
+    st.image("shakes.jpg", use_column_width=True)
+
+    st.markdown("## 🎯 Ziel")
+
+    ziel = st.selectbox("", ["Cutting", "Maintenance", "Bulking"])
+
+    st.markdown("## 🥗 Komponenten")
 
     protein = st.selectbox("Protein", ["Hähnchen", "Rind", "Tofu", "Lachs"])
     carbs = st.selectbox("Carbs", ["Reis", "Nudeln", "Quinoa"])
     fats = st.selectbox("Fette", ["Avocado", "Nüsse"])
 
-    extras = st.multiselect("Extras", ["Shake", "Riegel", "Obst"])
+    extras = st.multiselect("Extras", [
+        "Protein Shake",
+        "Snack Bar",
+        "Yogurt Bites"
+    ])
 
-    meals = st.slider("Mahlzeiten/Tag", 2, 6, 3)
+    st.markdown("## 📦 Menge")
+
+    meals = st.slider("Mahlzeiten pro Tag", 2, 6, 3)
     days = st.slider("Tage", 1, 7, 3)
 
     price = meals * days * 9
 
-    st.markdown(f"## 💰 {price} €")
+    st.markdown(f"## 💰 Preis: {price} €")
+
+    st.markdown("## 📩 Vorbestellung")
 
     name = st.text_input("Name")
     email = st.text_input("E-Mail")
 
-    if st.button("Vorbestellen"):
+    if st.button("🔥 Vorbestellen"):
         if name and email:
-            st.success("🔥 Bestellung gespeichert (Demo)")
+            st.success("✅ Bestellung gespeichert (Demo)")
         else:
-            st.error("Bitte alles ausfüllen")
+            st.error("Bitte alle Felder ausfüllen")
 
-# -------------------------
-# KALORIENRECHNER (NEU 🔥)
-# -------------------------
+
+# -----------------------------------
+# KALORIENRECHNER
+# -----------------------------------
 elif page == "Kalorienrechner":
 
     st.markdown("<h1 class='neon'>🧮 Kalorienrechner</h1>", unsafe_allow_html=True)
@@ -148,7 +168,6 @@ elif page == "Kalorienrechner":
 
     if st.button("Berechnen"):
 
-        # Grundumsatz (Mifflin-St Jeor)
         if geschlecht == "Männlich":
             bmr = 10 * gewicht + 6.25 * groesse - 5 * alter + 5
         else:
