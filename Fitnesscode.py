@@ -58,14 +58,12 @@ if page == "Startseite":
     # Interaktive Mini-Box Auswahl
     st.markdown("## 📦 Mini-Box Vorschau (klicke deine Zutaten an!)")
     col1, col2, col3 = st.columns(3)
-
     with col1:
         protein = st.selectbox("Protein", ["Hähnchen", "Rind", "Tofu", "Lachs"])
     with col2:
         carbs = st.selectbox("Kohlenhydrate", ["Reis", "Süßkartoffel", "Nudeln", "Quinoa"])
     with col3:
         fats = st.selectbox("Fette", ["Avocado", "Nüsse", "Olivenöl"])
-
     extras = st.multiselect("Extras", ["Protein Shake", "Snack Bar", "Obst", "Yogurt Bites"])
 
     st.markdown("### Deine aktuelle Box enthält:")
@@ -77,9 +75,16 @@ if page == "Startseite":
     else:
         st.markdown("- Extras: **keine**")
 
+    # Mini Preisberechnung direkt auf Startseite
+    meals_per_day = st.slider("Mahlzeiten pro Tag", 2, 6, 3)
+    days = st.slider("Für wie viele Tage?", 1, 7, 3)
+    base_price = 8
+    total_price = base_price * meals_per_day * days
+    st.markdown(f"### 💰 Geschätzter Preis: {total_price} €")
+
     st.markdown("---")
 
-    # Highlights
+    # Highlights & Fun Facts
     st.subheader("💥 Unsere Highlights")
     st.markdown("""
     - 🥗 **Low Sugar & Clean Ingredients**  
@@ -88,7 +93,6 @@ if page == "Startseite":
     - 🍽️ **Perfekt für Cutting, Maintenance & Bulking**
     """)
 
-    # Fun Facts
     st.subheader("💡 Fun Facts & Tipps")
     st.markdown("""
     - Protein unterstützt Muskelaufbau 🏋️‍♂️  
@@ -139,21 +143,48 @@ elif page == "Essensbox erstellen":
             st.error("Bitte Name und E-Mail eingeben.")
 
 # -------------------------
-# BMI RECHNER
+# BMI RECHNER + Fragen
 # -------------------------
 elif page == "BMI Rechner":
-    st.title("🧮 BMI Rechner")
+    st.title("🧮 BMI Rechner & Ernährungsfragen")
     gewicht = st.number_input("Gewicht (kg)", min_value=30.0, max_value=200.0)
     groesse = st.number_input("Größe (cm)", min_value=120.0, max_value=230.0)
+    ziel = st.selectbox("Dein Fitness-Ziel", ["Cutting", "Maintenance", "Bulking"])
+
     if st.button("BMI berechnen"):
         bmi = gewicht / ((groesse / 100) ** 2)
         st.markdown(f"### Dein BMI: {round(bmi, 2)}")
+
         if bmi < 18.5:
             st.warning("Untergewicht")
+            tip = "💡 Tipp: Setze auf proteinreiche, kalorienoptimierte Mahlzeiten, um gesund zuzunehmen."
         elif 18.5 <= bmi < 25:
             st.success("Normalgewicht")
+            tip = "💡 Tipp: Halte deine Ernährung ausgewogen und passe Protein & Kalorien an dein Training an."
         elif 25 <= bmi < 30:
             st.warning("Übergewicht")
+            tip = "💡 Tipp: Reduziere einfache Kohlenhydrate, erhöhe Proteine, kombiniere mit regelmäßigem Training."
         else:
             st.error("Adipositas")
-        st.markdown("💡 Tipp: Passe deine Ernährung an dein Ziel an!")
+            tip = "💡 Tipp: Konsultiere ggf. einen Arzt oder Ernährungsberater. Fokus auf gesunde, kalorienkontrollierte Ernährung."
+        st.markdown(tip)
+
+    st.markdown("---")
+    st.subheader("❓ Stelle eine Frage an deine Fitness Food App")
+    user_question = st.text_input("Deine Frage hier... (z.B. 'Wie viele Mahlzeiten für Cutting?')")
+
+    if st.button("Antwort erhalten"):
+        if user_question:
+            question = user_question.lower()
+            if "cutting" in question:
+                st.info("Für Cutting empfehlen wir 3–5 kleinere Mahlzeiten pro Tag, proteinreich, kalorienbewusst.")
+            elif "bulking" in question or "muskel" in question:
+                st.info("Für Bulking empfehlen wir 4–6 Mahlzeiten pro Tag, proteinreich und kalorienüberschuss.")
+            elif "maintenance" in question:
+                st.info("Für Maintenance 3–5 Mahlzeiten pro Tag, ausgewogen und kalorienneutral.")
+            elif "bmi" in question:
+                st.info("Dein BMI hilft dir, dein Gewicht im Verhältnis zur Größe einzuschätzen.")
+            else:
+                st.info("Interessante Frage! Achte auf dein Fitness-Ziel und eine ausgewogene Ernährung.")
+        else:
+            st.error("Bitte schreibe zuerst eine Frage.")
