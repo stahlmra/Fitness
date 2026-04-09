@@ -1,125 +1,168 @@
 import streamlit as st
 
-# Seiten-Config
 st.set_page_config(page_title="Fitness Food", layout="wide")
 
-# Custom CSS (Schwarz + Neon Grün)
+# -------------------------
+# CUSTOM CSS (NEXT LEVEL UI)
+# -------------------------
 st.markdown("""
-    <style>
-    body {
-        background-color: #0a0a0a;
-        color: white;
-    }
-    .stApp {
-        background-color: #0a0a0a;
-    }
-    h1, h2, h3 {
-        color: #39ff14;
-    }
-    .stButton>button {
-        background-color: #39ff14;
-        color: black;
-        border-radius: 10px;
-        font-weight: bold;
-    }
-    .stSelectbox, .stNumberInput {
-        background-color: #111;
-    }
-    </style>
+<style>
+/* Hintergrund */
+.stApp {
+    background-color: #050505;
+    color: white;
+}
+
+/* Neon Glow Effekt */
+.neon {
+    color: #39ff14;
+    text-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14;
+}
+
+/* Buttons */
+.stButton>button {
+    background: linear-gradient(90deg, #39ff14, #00ff99);
+    color: black;
+    border-radius: 12px;
+    font-weight: bold;
+    height: 3em;
+}
+
+/* Card Look */
+.card {
+    background-color: #111;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(57,255,20,0.3);
+    margin-bottom: 20px;
+}
+
+/* Sidebar */
+.css-1d391kg {
+    background-color: #0a0a0a;
+}
+</style>
 """, unsafe_allow_html=True)
 
-# Navigation
-page = st.sidebar.radio("Navigation", ["Startseite", "Essensbox erstellen", "BMI Rechner"])
+# -------------------------
+# SIDEBAR NAVIGATION
+# -------------------------
+page = st.sidebar.radio("Navigation", [
+    "Startseite",
+    "Essensbox",
+    "Kalorienrechner",
+])
 
 # -------------------------
-# STARTSEITE
+# STARTSEITE (UPGRADE)
 # -------------------------
 if page == "Startseite":
-    st.title("🔥 Fitness Food Boxes")
+
+    # Logo
+    st.image("assets/logo.png", width=150)
+
+    st.markdown("<h1 class='neon'>FULL DAY OF EATING</h1>", unsafe_allow_html=True)
+
+    st.image("assets/hero.jpg", use_column_width=True)
 
     st.markdown("""
-    Willkommen bei deiner Fitness-Ernährungsplattform 💪  
-    Stelle dir deine eigene Full Day of Eating Box zusammen!
+    ## 💪 Dein Fitness. Dein Plan. Dein Essen.
+
+    Keine Zeit zu kochen? Kein Problem.  
+    Wir liefern dir komplette **Full Day of Eating Boxen** – perfekt abgestimmt auf dein Ziel.
+
+    ---
     """)
 
-    st.subheader("💥 Unsere Konzepte")
-    st.write("- Cutting Box (Kaloriendefizit)")
-    st.write("- Maintenance Box (Erhalt)")
-    st.write("- Bulking Box (Muskelaufbau)")
+    col1, col2, col3 = st.columns(3)
 
+    with col1:
+        st.markdown("<div class='card'><h3>🔥 Cutting</h3><p>Fett verlieren, Muskeln behalten.</p></div>", unsafe_allow_html=True)
+
+    with col2:
+        st.markdown("<div class='card'><h3>⚖️ Maintenance</h3><p>Gewicht halten, clean essen.</p></div>", unsafe_allow_html=True)
+
+    with col3:
+        st.markdown("<div class='card'><h3>💪 Bulking</h3><p>Muskelaufbau mit Überschuss.</p></div>", unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    st.subheader("🚀 Warum wir?")
+    st.write("""
+    - Individuell anpassbare Boxen  
+    - Hochwertige Zutaten  
+    - Perfekt für Fitnessziele  
+    - Spart Zeit & Aufwand  
+    """)
 
 # -------------------------
 # ESSENSBOX BUILDER
 # -------------------------
-elif page == "Essensbox erstellen":
-    st.title("🍱 Baue deine eigene Box")
+elif page == "Essensbox":
 
-    st.subheader("1️⃣ Ziel wählen")
-    ziel = st.selectbox("Dein Ziel", ["Cutting", "Maintenance", "Bulking"])
+    st.markdown("<h1 class='neon'>🍱 Baue deine Box</h1>", unsafe_allow_html=True)
 
-    st.subheader("2️⃣ Mahlzeiten auswählen")
+    ziel = st.selectbox("Ziel", ["Cutting", "Maintenance", "Bulking"])
 
-    # 👉 HIER kannst du später alles anpassen
-    protein = st.selectbox("Proteinquelle", [
-        "Hähnchen", "Rind", "Tofu", "Lachs"
-    ])
+    protein = st.selectbox("Protein", ["Hähnchen", "Rind", "Tofu", "Lachs"])
+    carbs = st.selectbox("Carbs", ["Reis", "Nudeln", "Quinoa"])
+    fats = st.selectbox("Fette", ["Avocado", "Nüsse"])
 
-    carbs = st.selectbox("Kohlenhydrate", [
-        "Reis", "Süßkartoffel", "Nudeln", "Quinoa"
-    ])
+    extras = st.multiselect("Extras", ["Shake", "Riegel", "Obst"])
 
-    fats = st.selectbox("Fette", [
-        "Avocado", "Nüsse", "Olivenöl"
-    ])
+    meals = st.slider("Mahlzeiten/Tag", 2, 6, 3)
+    days = st.slider("Tage", 1, 7, 3)
 
-    extras = st.multiselect("Extras", [
-        "Protein Shake", "Snack Bar", "Obst"
-    ])
+    price = meals * days * 9
 
-    st.subheader("3️⃣ Menge & Preis")
+    st.markdown(f"## 💰 {price} €")
 
-    meals_per_day = st.slider("Mahlzeiten pro Tag", 2, 6, 3)
-    days = st.slider("Für wie viele Tage?", 1, 7, 3)
+    name = st.text_input("Name")
+    email = st.text_input("E-Mail")
 
-    # einfacher Preis-Algorithmus
-    base_price = 8
-    total_price = base_price * meals_per_day * days
-
-    st.markdown(f"### 💰 Preis: {total_price} €")
-
-    st.subheader("4️⃣ Vorbestellung")
-
-    name = st.text_input("Dein Name")
-    email = st.text_input("Deine E-Mail")
-
-    if st.button("🚀 Vorbestellen"):
+    if st.button("Vorbestellen"):
         if name and email:
-            st.success("✅ Bestellung gespeichert! (Simulation)")
+            st.success("🔥 Bestellung gespeichert (Demo)")
         else:
-            st.error("Bitte Name und E-Mail eingeben.")
-
+            st.error("Bitte alles ausfüllen")
 
 # -------------------------
-# BMI RECHNER
+# KALORIENRECHNER (NEU 🔥)
 # -------------------------
-elif page == "BMI Rechner":
-    st.title("🧮 BMI Rechner")
+elif page == "Kalorienrechner":
 
-    gewicht = st.number_input("Gewicht (kg)", min_value=30.0, max_value=200.0)
-    groesse = st.number_input("Größe (cm)", min_value=120.0, max_value=230.0)
+    st.markdown("<h1 class='neon'>🧮 Kalorienrechner</h1>", unsafe_allow_html=True)
 
-    if st.button("BMI berechnen"):
-        bmi = gewicht / ((groesse / 100) ** 2)
+    gewicht = st.number_input("Gewicht (kg)", 40.0, 200.0)
+    groesse = st.number_input("Größe (cm)", 140.0, 220.0)
+    alter = st.number_input("Alter", 14, 80)
 
-        st.markdown(f"### Dein BMI: {round(bmi, 2)}")
+    geschlecht = st.selectbox("Geschlecht", ["Männlich", "Weiblich"])
 
-        if bmi < 18.5:
-            st.warning("Untergewicht")
-        elif 18.5 <= bmi < 25:
-            st.success("Normalgewicht")
-        elif 25 <= bmi < 30:
-            st.warning("Übergewicht")
+    aktivitaet = st.selectbox("Aktivität", [
+        "Wenig Bewegung",
+        "Leicht aktiv",
+        "Sportlich",
+        "Sehr aktiv"
+    ])
+
+    if st.button("Berechnen"):
+
+        # Grundumsatz (Mifflin-St Jeor)
+        if geschlecht == "Männlich":
+            bmr = 10 * gewicht + 6.25 * groesse - 5 * alter + 5
         else:
-            st.error("Adipositas")
+            bmr = 10 * gewicht + 6.25 * groesse - 5 * alter - 161
 
-        st.markdown("💡 Tipp: Passe deine Ernährung an dein Ziel an!")
+        faktor = {
+            "Wenig Bewegung": 1.2,
+            "Leicht aktiv": 1.375,
+            "Sportlich": 1.55,
+            "Sehr aktiv": 1.725
+        }
+
+        tdee = bmr * faktor[aktivitaet]
+
+        st.markdown(f"## 🔥 Erhaltung: {int(tdee)} kcal")
+        st.markdown(f"## 🔻 Cutting: {int(tdee - 500)} kcal")
+        st.markdown(f"## 🔺 Bulking: {int(tdee + 300)} kcal")
