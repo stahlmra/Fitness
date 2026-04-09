@@ -13,6 +13,7 @@ st.markdown("""
 .stApp {
     background-color: #050505;
     color: white;
+    font-family: 'Arial', sans-serif;
 }
 
 .neon {
@@ -35,6 +36,10 @@ st.markdown("""
     box-shadow: 0 0 15px rgba(57,255,20,0.3);
     margin-bottom: 20px;
 }
+
+h2, h3 {
+    color: #39ff14;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -52,53 +57,64 @@ page = st.sidebar.radio("Navigation", [
 # -----------------------------------
 if page == "Startseite":
 
-    st.image("formo_logo.jpg", width=250)
-
     st.markdown("<h1 class='neon'>FORMO NUTRITION</h1>", unsafe_allow_html=True)
     st.markdown("### Fuel your day. Build your future.")
 
     st.markdown("---")
 
-    st.image("shakes.jpg", use_column_width=True)
-
     st.markdown("""
-    ## 🔥 MORNING FUEL. REAL RESULTS.
+    ## 🔥 Unsere Highlights
 
-    ✔ 25g Protein pro Portion  
-    ✔ Low Sugar  
-    ✔ Perfekt für dein Fitnessziel  
-
-    Egal ob **Cutting, Maintenance oder Bulking** – wir liefern dir die passende Ernährung.
+    - 💪 **25g Protein pro Portion**  
+    - 🥗 **Low Sugar & Clean Ingredients**  
+    - ⏱️ **Snack oder Meal in Minuten bereit**  
+    - 🍽️ **Perfekt für Cutting, Maintenance & Bulking**  
     """)
 
     st.markdown("---")
 
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.image("yogurt.jpg", use_column_width=True)
-
-    with col2:
-        st.markdown("""
-        ## 🍓 Protein Yogurt Bites
-
-        - High Protein  
-        - Low Sugar  
-        - Perfekt als Snack  
-        - Ideal für unterwegs  
-
-        Ergänze deine Box perfekt.
-        """)
+    st.markdown("## 📦 Deine Vorteile auf einen Blick")
+    st.markdown("""
+    - **Flexibel:** 2–6 Mahlzeiten pro Tag  
+    - **Modular:** Baue deine Box nach deinem Geschmack  
+    - **Smart:** Ernährung und Training im Einklang  
+    - **Zeitersparnis:** Kein Planen, kein Einkaufen
+    """)
 
     st.markdown("---")
 
-    st.markdown("<h2 class='neon'>🍱 Baue deine eigene Box</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 class='neon'>🚀 Starte jetzt!</h2>", unsafe_allow_html=True)
+    st.write("Stelle deine perfekte Full Day of Eating Box zusammen oder berechne deine Kalorien.")
 
-    st.write("Stelle dir deine perfekte Full Day of Eating Box zusammen.")
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("🍱 Box zusammenstellen"):
+            st.session_state.page = "Essensbox"
+    with col2:
+        if st.button("🧮 Kalorien berechnen"):
+            st.session_state.page = "Kalorienrechner"
 
-    if st.button("🚀 Jetzt starten"):
-        st.session_state.page = "Essensbox"
+    st.markdown("---")
 
+    st.markdown("## 💡 Fun Facts & Tipps")
+    st.markdown("""
+    - Protein hilft beim Muskelaufbau 🏋️‍♂️  
+    - Kleine Mahlzeiten stabilisieren den Blutzucker 🌡️  
+    - Meal Prep spart bis zu 5 Stunden pro Woche ⏳  
+    - Snacks clever planen = keine Heißhungerattacken 🍓
+    """)
+
+    st.markdown("---")
+
+    st.markdown("<h2 class='neon'>🔥 Quick Pick Box</h2>", unsafe_allow_html=True)
+    st.markdown("**Hier ein Vorschlag für deinen Tag:**")
+    st.markdown("""
+    - Frühstück: Protein Oats mit Früchten  
+    - Vormittagssnack: Yogurt Bites  
+    - Mittag: Hähnchen Bowl mit Quinoa & Avocado  
+    - Nachmittagssnack: Protein Shake  
+    - Abend: Lachs mit Gemüse & Reis  
+    """)
 
 # -----------------------------------
 # ESSENSBOX
@@ -107,14 +123,10 @@ elif page == "Essensbox":
 
     st.markdown("<h1 class='neon'>🍱 Deine Fitness Box</h1>", unsafe_allow_html=True)
 
-    st.image("shakes.jpg", use_column_width=True)
-
     st.markdown("## 🎯 Ziel")
-
     ziel = st.selectbox("", ["Cutting", "Maintenance", "Bulking"])
 
     st.markdown("## 🥗 Komponenten")
-
     protein = st.selectbox("Protein", ["Hähnchen", "Rind", "Tofu", "Lachs"])
     carbs = st.selectbox("Carbs", ["Reis", "Nudeln", "Quinoa"])
     fats = st.selectbox("Fette", ["Avocado", "Nüsse"])
@@ -126,16 +138,13 @@ elif page == "Essensbox":
     ])
 
     st.markdown("## 📦 Menge")
-
     meals = st.slider("Mahlzeiten pro Tag", 2, 6, 3)
     days = st.slider("Tage", 1, 7, 3)
 
     price = meals * days * 9
-
     st.markdown(f"## 💰 Preis: {price} €")
 
     st.markdown("## 📩 Vorbestellung")
-
     name = st.text_input("Name")
     email = st.text_input("E-Mail")
 
@@ -144,7 +153,6 @@ elif page == "Essensbox":
             st.success("✅ Bestellung gespeichert (Demo)")
         else:
             st.error("Bitte alle Felder ausfüllen")
-
 
 # -----------------------------------
 # KALORIENRECHNER
@@ -158,7 +166,6 @@ elif page == "Kalorienrechner":
     alter = st.number_input("Alter", 14, 80)
 
     geschlecht = st.selectbox("Geschlecht", ["Männlich", "Weiblich"])
-
     aktivitaet = st.selectbox("Aktivität", [
         "Wenig Bewegung",
         "Leicht aktiv",
